@@ -42,7 +42,7 @@ export default function Register() {
                         id="name"
                         name="name"
                         value={data.name}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-blue-200 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500 text-blue-800"
                         autoComplete="name"
                         isFocused={true}
                         onChange={handleOnChange}
@@ -60,7 +60,7 @@ export default function Register() {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-blue-200 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500 text-blue-800"
                         autoComplete="username"
                         onChange={handleOnChange}
                         required
@@ -77,7 +77,7 @@ export default function Register() {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-blue-200 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500 text-blue-800"
                         autoComplete="new-password"
                         onChange={handleOnChange}
                         required
@@ -94,7 +94,7 @@ export default function Register() {
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-blue-200 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500 text-blue-800"
                         autoComplete="new-password"
                         onChange={handleOnChange}
                         required

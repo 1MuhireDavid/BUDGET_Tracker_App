@@ -12,7 +12,7 @@ export default function Login({ status, canResetPassword }) {
         email: '',
         password: '',
         remember: '',
-    }); 
+    });
 
     useEffect(() => {
         return () => {
@@ -28,7 +28,7 @@ export default function Login({ status, canResetPassword }) {
         e.preventDefault();
 
         post(route('login'));
-    }; 
+    };
 
     return (
         <GuestLayout>
@@ -45,7 +45,7 @@ export default function Login({ status, canResetPassword }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-blue-200 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500 text-blue-800"
                         autoComplete="username"
                         isFocused={true}
                         onChange={handleOnChange}
@@ -62,7 +62,7 @@ export default function Login({ status, canResetPassword }) {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-blue-200 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500 text-blue-800"
                         autoComplete="current-password"
                         onChange={handleOnChange}
                     />
