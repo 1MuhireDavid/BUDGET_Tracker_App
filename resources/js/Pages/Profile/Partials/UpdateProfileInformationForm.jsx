@@ -17,7 +17,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         e.preventDefault();
 
         patch(route('profile.update'));
-    };
+    }; 
 
     return (
         <section className={className}>

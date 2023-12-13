@@ -12,7 +12,7 @@ export default function Login({ status, canResetPassword }) {
         email: '',
         password: '',
         remember: '',
-    });
+    }); 
 
     useEffect(() => {
         return () => {
@@ -28,7 +28,7 @@ export default function Login({ status, canResetPassword }) {
         e.preventDefault();
 
         post(route('login'));
-    };
+    }; 
 
     return (
         <GuestLayout>

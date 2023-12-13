@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,7 +29,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
+  
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -34,5 +39,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::resource('Budget', BudgetController::class);
+Route::resource('Expense', ExpenseController::class);
+Route::resource('Income', IncomeController::class);
+Route::resource('Category', CategoryController::class);
+Route::resource('Account', AccountController::class);
 
 require __DIR__.'/auth.php';
