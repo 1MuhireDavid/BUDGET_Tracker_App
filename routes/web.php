@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ExpenseController;
@@ -32,7 +33,7 @@ Route::get('/', function () {
   
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');  
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -45,4 +46,6 @@ Route::resource('Income', IncomeController::class);
 Route::resource('Category', CategoryController::class);
 Route::resource('Account', AccountController::class);
 
+Route::resource('About', AboutUsController::class);
 require __DIR__.'/auth.php';
+ 

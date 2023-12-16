@@ -49,8 +49,8 @@ export default function Welcome(props) {
           
         </a>
              <ul>
-            <li><a  href={route('login')}>Home</a></li>
-            <li><a  href={route('about')}>About</a></li>
+            <li><a  href="#services">Home</a></li>
+            <li><a  href={route('About.index')}>About</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#contact">Contact</a></li>
            </ul>
