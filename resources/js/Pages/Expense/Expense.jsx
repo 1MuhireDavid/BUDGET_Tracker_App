@@ -7,9 +7,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/react'
 import Modal from '@/Components/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import Progress from '@/Components/Progress';
-export default function IndexBudget(props) {
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+export default function Expense(props) {
   const { budgets} = usePage().props; 
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => {
@@ -17,21 +16,28 @@ export default function IndexBudget(props) {
   };
 
   const { data, setData, post, processing } = useForm({
-    income: '',
     category: '',
+    value: '',
     account: '',
-
+    date: '',
+    time: '',
+    notes: '',
+    to: '',
   });
+
 
   const handleOnChange = (event) => {
     setData(event.target.name, event.target.value);
   };
 
+  console.log(data);
+
   const submit = (e) => {
     e.preventDefault();
 
-    post(route('Budget.store'));
+    post(route('Expense.store'), data); // Assuming your API expects the entire data object.
   };
+
   return (
     <AuthenticatedLayout
     auth={props.auth}
@@ -41,59 +47,99 @@ export default function IndexBudget(props) {
     >
       
     <div className='mx-4 space-y-4'>
-      <Head title="Budget" />
+    <Head title="Category" />
+      <h1>Expense</h1>
+
+      {/* Render the budget data */}
       {budgets.map((budget) => (
-        <div className="bg-white">
-        <div className="flex justify-between items-center h-14  m-3 p-2 rounded-lg" key={budget.id} >
-          <div className="">
-          <p>{budget.category}</p>
+        <div key={budget.id} >
+        <h3><Link href={route('Budget.show', budget.id)}>{budget.category}</Link></h3>
           <p>{budget.account}</p>
-          </div>
-          <div className="text-end">
           <p>{budget.value}</p>
-          </div>
-        </div>
-          <Progress progress={10}/>
         </div>
       ))}
     </div>
-    <div className="absolute bottom-4 right-8 bottom-9 fixed">
-    <button onClick={toggleModal}><FontAwesomeIcon icon={faCirclePlus} className="w-12 h-12 mr-2 fa-4x" /></button>
+    <div className="absolute bottom-4 right-4 bottom-3 fixed">
+    <button onClick={toggleModal}><FontAwesomeIcon icon={faPlus} className="w-6 h-6 mr-2" /></button>
       <Modal show={showModal} onClose={toggleModal}>
       <div className='mx-4 space-y-4'>
       <Head title="Budget" />
 
       <form onSubmit={submit}>
         <div>
-          <h3>Budget amount</h3>
+          <h3>Category</h3>
+          <select id="category" name="category" onChange={handleOnChange} className="mt-1 block w-full">
+          <option>Enter Category</option>
+            {
+              categorys.map((cat,i) => <option key={i}>{cat.name}</option>)
+            }
+          </select>
+        </div>
+
+        <div className="mt-4">
+          <h3>Value</h3>
           <TextInput
-            id="income"
+            id="value"
             type="number"
-            name="income"
-            value={data.income}
+            name="value"
+            value={data.value}
+            className="mt-1 block w-full"
+            onChange={handleOnChange}
+          />
+        </div>
+ 
+        <div className="mt-4">
+          <h3>Account</h3>
+          <select id="account" name="account" onChange={handleOnChange} className="mt-1 block w-full">
+          <option>Enter Account</option>
+            {
+              accounts.map((acc,i) => <option key={i}>{acc.name}</option>)
+            }
+          </select>
+        </div>
+
+        <div className="mt-4">
+          <h3>Date</h3>
+          <TextInput
+            id="date"
+            type="date"
+            name="date"
+            value={data.date}
             className="mt-1 block w-full"
             onChange={handleOnChange}
           />
         </div>
 
         <div className="mt-4">
-          <h3>Category</h3>
+          <h3>Time</h3>
           <TextInput
-            id="category"
+            id="time"
+            type="time"
+            name="time"
+            value={data.time}
+            className="mt-1 block w-full"
+            onChange={handleOnChange}
+          />
+        </div>
+
+        <div className="mt-4">
+          <h3>Notes</h3>
+          <TextInput
+            id="notes"
             type="text"
-            name="category"
-            value={data.category}
+            name="notes"
+            value={data.notes}
             className="mt-1 block w-full"
             onChange={handleOnChange}
           />
         </div>
         <div className="mt-4">
-          <h3>Account</h3>
+          <h3>To</h3>
           <TextInput
-            id="account"
+            id="to"
             type="text"
-            name="account"
-            value={data.account}
+            name="to"
+            value={data.to}
             className="mt-1 block w-full"
             onChange={handleOnChange}
           />

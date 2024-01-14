@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Transaction;
 
 class Account extends Model
 {
@@ -16,9 +17,12 @@ class Account extends Model
         return $this->belongsTo('App\Models\Budget');
     }
     public function income(){
-        return $this->belongsTo('App\Models\Income');
+        return $this->hasMany('App\Models\Income');
     }
     public function expense(){
-        return $this->belongsTo('App\Models\Expense');
+        return $this->hasMany('App\Models\Expense');
     }
-}
+    public function Transaction(){
+        return $this->belongsToMany(Transaction::class, 'account_id');
+    }
+} 

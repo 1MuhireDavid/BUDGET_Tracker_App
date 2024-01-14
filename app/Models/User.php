@@ -57,5 +57,8 @@ class User extends Authenticatable
     public function category(){
         return $this->hasMany('App\Models\Income');
     }
+    public function transaction(){
+        return $this->hasMany('App\Models\Transaction');
+    }
 
 }

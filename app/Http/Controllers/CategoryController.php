@@ -16,7 +16,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        // $user = auth()->user()->id;
+        $category = Category::All();
+        return Inertia::render('Category/Category',['Category' => $category]);
     }
 
     /**
@@ -39,10 +41,12 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'name' => 'required', 
+            'type' => 'required', 
         ]);
 
         $category = new Category;
         $category->name = $request->input('name');
+        $category->type = $request->input('type');
         $category->user_id = auth()->user()->id;
         $category->save();
 
@@ -55,7 +59,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
         //
     }
@@ -66,7 +70,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
         //
     }
@@ -78,7 +82,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -89,7 +93,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
         //
     }

@@ -12,8 +12,9 @@ export default function NewIncome() {
     date: '',
     time: '',
     notes: '',
-    senders: ''
-    });
+    senders: '',
+    type: 'income',
+    }); 
  
   const handleOnChange = (event) => {
     setData(event.target.name, event.target.value);
@@ -22,9 +23,10 @@ export default function NewIncome() {
   const submit = (e) => {
     e.preventDefault();
 
-    post(route('Income.store'), data); // Assuming your API expects the entire data object.
+    post(route('Transaction.store'), data); // Assuming your API expects the entire data object.
   };
 
+  console.log(data)
 
   return (
     <div className='mx-4 space-y-4'>

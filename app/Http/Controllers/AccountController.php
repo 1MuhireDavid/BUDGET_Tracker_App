@@ -16,7 +16,8 @@ class AccountController extends Controller
      */
     public function index()
     {
-        //
+        $accounts = Account::all();
+          return Inertia::render('Budget/IndexBudget')->with('accounts', $accounts);
     }
 
     /**
@@ -59,7 +60,7 @@ class AccountController extends Controller
      * @param  \App\Models\account  $account
      * @return \Illuminate\Http\Response
      */
-    public function show(account $account)
+    public function show($id)
     {
         //
     }
@@ -70,7 +71,7 @@ class AccountController extends Controller
      * @param  \App\Models\account  $account
      * @return \Illuminate\Http\Response
      */
-    public function edit(account $account)
+    public function edit($id)
     {
         //
     }
@@ -82,7 +83,7 @@ class AccountController extends Controller
      * @param  \App\Models\account  $account
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, account $account)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -93,7 +94,7 @@ class AccountController extends Controller
      * @param  \App\Models\account  $account
      * @return \Illuminate\Http\Response
      */
-    public function destroy(account $account)
+    public function destroy($id)
     {
         //
     }

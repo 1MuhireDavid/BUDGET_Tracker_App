@@ -7,20 +7,18 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/react'
 import Modal from '@/Components/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import Progress from '@/Components/Progress';
-export default function IndexBudget(props) {
-  const { budgets} = usePage().props; 
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+export default function Account(props) {
+  const { budgets } = usePage().props; 
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => {
     setShowModal(!showModal);
   };
 
   const { data, setData, post, processing } = useForm({
-    income: '',
-    category: '',
-    account: '',
-
+    aname: '',
+    value: '',
+    notes: '',
   });
 
   const handleOnChange = (event) => {
@@ -30,8 +28,9 @@ export default function IndexBudget(props) {
   const submit = (e) => {
     e.preventDefault();
 
-    post(route('Budget.store'));
+    post(route('Account.store'), data); // Assuming your API expects the entire data object.
   };
+
   return (
     <AuthenticatedLayout
     auth={props.auth}
@@ -41,59 +40,56 @@ export default function IndexBudget(props) {
     >
       
     <div className='mx-4 space-y-4'>
-      <Head title="Budget" />
+    <Head title="Category" />
+      <h1>Category</h1>
+
+      {/* Render the budget data */}
       {budgets.map((budget) => (
-        <div className="bg-white">
-        <div className="flex justify-between items-center h-14  m-3 p-2 rounded-lg" key={budget.id} >
-          <div className="">
-          <p>{budget.category}</p>
+        <div key={budget.id} >
+        <h3><Link href={route('Budget.show', budget.id)}>{budget.category}</Link></h3>
           <p>{budget.account}</p>
-          </div>
-          <div className="text-end">
           <p>{budget.value}</p>
-          </div>
-        </div>
-          <Progress progress={10}/>
         </div>
       ))}
     </div>
-    <div className="absolute bottom-4 right-8 bottom-9 fixed">
-    <button onClick={toggleModal}><FontAwesomeIcon icon={faCirclePlus} className="w-12 h-12 mr-2 fa-4x" /></button>
+    <div className="absolute bottom-4 right-4 bottom-3 fixed">
+    <button onClick={toggleModal}><FontAwesomeIcon icon={faPlus} className="w-6 h-6 mr-2" /></button>
       <Modal show={showModal} onClose={toggleModal}>
       <div className='mx-4 space-y-4'>
       <Head title="Budget" />
 
       <form onSubmit={submit}>
         <div>
-          <h3>Budget amount</h3>
+          <h3>Name</h3>
           <TextInput
-            id="income"
-            type="number"
-            name="income"
-            value={data.income}
+            id="aname"
+            type="text"
+            name="aname"
+            value={data.aname}
             className="mt-1 block w-full"
             onChange={handleOnChange}
           />
         </div>
 
         <div className="mt-4">
-          <h3>Category</h3>
+          <h3>Initial amount</h3>
           <TextInput
-            id="category"
-            type="text"
-            name="category"
-            value={data.category}
+            id="value"
+            type="number"
+            name="value"
+            value={data.value}
             className="mt-1 block w-full"
             onChange={handleOnChange}
           />
         </div>
+
         <div className="mt-4">
-          <h3>Account</h3>
+          <h3>Notes</h3>
           <TextInput
-            id="account"
+            id="notes"
             type="text"
-            name="account"
-            value={data.account}
+            name="notes"
+            value={data.notes}
             className="mt-1 block w-full"
             onChange={handleOnChange}
           />
