@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Expense;
 use App\Models\User;
+use App\Models\Transaction;
+use App\Models\Account;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 
 class ExpenseController extends Controller
 {
@@ -28,7 +32,9 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Budget/NewExpense');
+        $account = Account::all();
+        $category = Category::all();
+        return Inertia::render('Budget/NewExpense')->with(['categorys' => $category, 'accounts' => $account]);
     }
 
     /**
@@ -50,20 +56,52 @@ class ExpenseController extends Controller
             'to'=> 'nullable|string',
         ]);
 
-        // Create a new expense entry in the database
-       // $expense = Expense::create($validatedData);
         
-
+       // $expense = Expense::create($validatedData);
        $expense = new Expense;
-            $expense->value = $request->input('value');
+       $transaction = new Transaction;
+       // Retrieve the account based on the account name
+       $account = Account::where('name', $request->input('account'))
+       ->where('user_id', auth()->user()->id)
+       ->first();
+
+       if (!$account) {
+       // Handle the case where the account is not found
+       return redirect()->back()->with('error', 'Account not found');
+       }
+       
+       DB::transaction(function () use ($expense, $account, $request) {
+
+            // Create a new expense entry in the database
+
+            $transaction->type = "expense";
+            $expense->amount = $request->input('value');
             $expense->category = $request->input('category');
             $expense->account = $request->input('account');
             $expense->date = $request->input('date');
             $expense->time = $request->input('time');
             $expense->notes = $request->input('notes');
-            $expense->to = $request->input('to');
+            $expense->receiver = $request->input('to');
             $expense->user_id = auth()->user()->id;
             $expense->save();
+
+          // Update the account amount
+                $account->value -= $request->input('value');
+                $account->save(); 
+// think about category amount by the budget
+          // Create a new transaction
+            // Transaction::create([
+            //     'category_id' => $request->input('category'),
+            //     'account_id' => $request->input('account'),
+            //     'amount' => $request->input('value'),
+            //     'user_id' => auth()->user()->id,
+            // ]);
+
+
+
+        
+    });
+            
 
         // Optionally, return a response or redirect as needed
         return Redirect::to('/dashboard')->with('message','Expense added successfully');
@@ -75,7 +113,7 @@ class ExpenseController extends Controller
      * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function show(Expense $expense)
+    public function show($id)
     {
         //
     }
@@ -86,7 +124,7 @@ class ExpenseController extends Controller
      * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function edit(Expense $expense)
+    public function edit($id)
     {
         //
     }
@@ -98,7 +136,7 @@ class ExpenseController extends Controller
      * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Expense $expense)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -109,7 +147,7 @@ class ExpenseController extends Controller
      * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Expense $expense)
+    public function destroy($id)
     {
         //
     }

@@ -13,14 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('account_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('type');
-            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->date('date');
+            $table->time('time');
+            $table->string('notes');
+            $table->string('receiver');
+            $table->unsignedBigInteger('amount');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->integer('user_id');
         });
     }
 
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('transactions');
     }
 };

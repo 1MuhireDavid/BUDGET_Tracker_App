@@ -1,10 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
 import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function Budget() {
+
+export default function Budget(props) {
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
   const { data, setData, post, processing } = useForm({
     income: '',
     category: '',
@@ -23,6 +29,11 @@ export default function Budget() {
   };
 
   return (
+    <AuthenticatedLayout
+    auth={props.auth}
+      errors={props.errors}
+      header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">New Budget</h2>}
+    >
     <div className='mx-4 space-y-4'>
       <Head title="Budget" />
 
@@ -68,6 +79,8 @@ export default function Budget() {
           </PrimaryButton>
         </div>
       </form>
+      
     </div>
+    </AuthenticatedLayout>
   );
 }

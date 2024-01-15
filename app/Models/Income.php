@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Income extends Model
 {
@@ -15,6 +16,6 @@ class Income extends Model
         return $this->belongsTo('App\Models\Budget');
     }
     public function account(){
-        return $this->hasMany('App\Models\account');
+        return $this->belongsTo('App\Models\account');
     }
 }

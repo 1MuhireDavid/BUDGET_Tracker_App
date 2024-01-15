@@ -15,6 +15,6 @@ class Expense extends Model
         return $this->belongsTo('App\Models\Budget');
     }
     public function account(){
-        return $this->hasMany('App\Models\account');
+        return $this->belongsTo('App\Models\account');
     }
 }

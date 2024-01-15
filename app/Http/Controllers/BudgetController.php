@@ -18,8 +18,9 @@ class BudgetController extends Controller
     public function index()
     {
       //  $post = Post::orderBy('created_at',' desc')->paginate(10); 
+      $user = auth()->user();
           $budgets = Budget::all();
-          return Inertia::render('Budget/IndexBudget')->with('budgets', $budgets);
+          return Inertia::render('Budget/IndexBudget', ['budgets' => $budgets]);
     }
 
     /**
@@ -62,9 +63,11 @@ class BudgetController extends Controller
      * @param  \App\Models\Budget  $budget
      * @return \Illuminate\Http\Response
      */
-    public function show(Budget $budget)
+    public function show($id)
     {
-        //
+         $budget = Budget::findOrFail($id);
+         
+        return Inertia::render('Budget/OneBudget', ['abudget' => $budget]);
     }
 
     /**
@@ -73,9 +76,9 @@ class BudgetController extends Controller
      * @param  \App\Models\Budget  $budget
      * @return \Illuminate\Http\Response
      */
-    public function edit(Budget $budget)
+    public function edit($id): Response
     {
-        //
+        return Inertia::render('Budget/OneBudget', ['abudget' => $budget]);
     }
 
     /**
@@ -85,7 +88,7 @@ class BudgetController extends Controller
      * @param  \App\Models\Budget  $budget
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Budget $budget)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -96,7 +99,7 @@ class BudgetController extends Controller
      * @param  \App\Models\Budget  $budget
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Budget $budget)
+    public function destroy($id)
     {
         //
     }

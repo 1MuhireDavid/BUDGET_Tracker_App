@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Income;
 use App\Models\User;
+use App\Models\Transaction;
+use App\Models\Account; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-
+use Illuminate\Support\Facades\DB;
 class IncomeController extends Controller
 {
     /**
@@ -40,28 +42,54 @@ class IncomeController extends Controller
     {
          // Validate the incoming request data
          $this->validate($request, [
-            'category' => 'required|string',
+            'category' => 'required|numeric',
             'income' => 'required|numeric',
-            'account' => 'required|string',
+            'account' => 'required|numeric',
             'date' => 'required|date',
             'time' => 'required',
             'notes' => 'nullable|string',
             'senders' => 'nullable|string',
         ]);
 
+        $income = new Income;
+        $transaction = new Transaction;
+
+        // Retrieve the account based on the account name
+        $account = Account::where('name', $request->input('account'))
+        ->where('user_id', auth()->user()->id)
+        ->first();
+
+        if (!$account) {
+        // Handle the case where the account is not found
+        return redirect()->back()->with('error', 'Account not found');
+        }
+
+        DB::transaction(function () use ($request, $account) {
  //        Create a new income entry in the database
  //       $income = Income::create($validatedData);
-            $income = new Income;
-            $income->value = $request->input('income');
-            $income->category = $request->input('category');
-            $income->account = $request->input('account');
-            $income->date = $request->input('date');
-            $income->time = $request->input('time');
-            $income->notes = $request->input('notes');
-            $income->from = $request->input('senders');
-            $income->user_id = auth()->user()->id;
-            $income->save();
+            $transaction->amount = $request->input('income');
+            $transaction->category_id = $request->input('category');
+            $transaction->account_id = $request->input('account');
+            $transaction->date = $request->input('date');
+            $transaction->time = $request->input('time');
+            $transaction->notes = $request->input('notes');
+            $transaction->type = "income";
+            $transaction->receiver = $request->input('senders');
+            $transaction->user_id = auth()->user()->id;
+            $transaction->save();
 
+// Update the account amount
+            $account->value += $request->input('income');
+            $account->save();
+
+            //  // Create a new transaction
+            // Transaction::create([
+            //     'category_id' => $request->input('category'),
+            //     'account_id' => $request->input('account'),
+            //     'amount' => $request->input('income'),
+            //     'user_id' => auth()->user()->id,
+            // ]);
+        });
 
         // Optionally, return a response or redirect as needed
         return Redirect::to('/dashboard')->with('message' , 'Income added successfully');
@@ -73,7 +101,7 @@ class IncomeController extends Controller
      * @param  \App\Models\Income  $income
      * @return \Illuminate\Http\Response
      */
-    public function show(Income $income)
+    public function show($id)
     {
         //
     }
@@ -84,7 +112,7 @@ class IncomeController extends Controller
      * @param  \App\Models\Income  $income
      * @return \Illuminate\Http\Response
      */
-    public function edit(Income $income)
+    public function edit($id)
     {
         //
     }
@@ -96,7 +124,7 @@ class IncomeController extends Controller
      * @param  \App\Models\Income  $income
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Income $income)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -107,7 +135,7 @@ class IncomeController extends Controller
      * @param  \App\Models\Income  $income
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Income $income)
+    public function destroy($id)
     {
         //
     }

@@ -25,5 +25,8 @@ class Category extends Model
     public function budget(){
         return $this->belongsTo('App\Models\Budget');
     }
+    public function Transaction(){
+        return $this->belongsTo('App\Models\Transaction');
+    }
 
 }

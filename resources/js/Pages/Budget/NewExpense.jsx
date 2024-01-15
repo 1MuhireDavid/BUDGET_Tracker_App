@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import Select from '@/Components/Select';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function NewExpense() {
+export default function NewExpense({categorys, accounts}) {
+ 
   const { data, setData, post, processing } = useForm({
     category: '',
     value: '',
@@ -11,17 +13,30 @@ export default function NewExpense() {
     date: '',
     time: '',
     notes: '',
-    to: '',
+    senders: '',
+    type: 'expense'
+    
   });
 
+
   const handleOnChange = (event) => {
-    setData(event.target.name, event.target.value);
+    if (event.target.name === "category" || event.target.name === "account") {
+      // Get the selected category's ID
+      const selectedCategoryId = parseInt(event.target.value);
+  
+      // Update the data with the ID
+      setData(event.target.name, selectedCategoryId);
+    } else {
+      // Update other fields as usual
+      setData(event.target.name, event.target.value);
+    }
   };
+
+  console.log(data);
 
   const submit = (e) => {
     e.preventDefault();
-
-    post(route('Expense.store'), data); // Assuming your API expects the entire data object.
+    post(route('Transaction.store'), data); // Assuming your API expects the entire data object.
   };
 
   return (
@@ -31,14 +46,12 @@ export default function NewExpense() {
       <form onSubmit={submit}>
         <div>
           <h3>Category</h3>
-          <TextInput
-            id="category"
-            type="text"
-            name="category"
-            value={data.category}
-            className="mt-1 block w-full"
-            onChange={handleOnChange}
-          />
+          <select id="category" name="category" onChange={handleOnChange} className="mt-1 block w-full">
+          <option>Enter Category</option>
+            {
+              categorys.map((cat,i) => <option value={cat.id} key={i}>{cat.name}</option>)
+            }
+          </select>
         </div>
 
         <div className="mt-4">
@@ -52,17 +65,15 @@ export default function NewExpense() {
             onChange={handleOnChange}
           />
         </div>
-
+ 
         <div className="mt-4">
           <h3>Account</h3>
-          <TextInput
-            id="account"
-            type="text"
-            name="account"
-            value={data.account}
-            className="mt-1 block w-full"
-            onChange={handleOnChange}
-          />
+          <select id="account" name="account" onChange={handleOnChange} className="mt-1 block w-full">
+          <option>Enter Account</option>
+            {
+              accounts.map((acc,i) => <option key={i} value={acc.id}>{acc.name}</option>)
+            }
+          </select>
         </div>
 
         <div className="mt-4">
@@ -103,10 +114,10 @@ export default function NewExpense() {
         <div className="mt-4">
           <h3>To</h3>
           <TextInput
-            id="to"
+            id="senders"
             type="text"
-            name="to"
-            value={data.to}
+            name="senders"
+            value={data.senders}
             className="mt-1 block w-full"
             onChange={handleOnChange}
           />
