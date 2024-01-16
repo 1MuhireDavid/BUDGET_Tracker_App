@@ -4,9 +4,11 @@ import TextInput from '@/Components/TextInput';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import Modal from '@/Components/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus,faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export default function ExpenseTab(props) {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editAccountId, setEditAccountId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { data, setData, post, processing } = useForm({
     name: '',

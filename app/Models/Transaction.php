@@ -22,10 +22,10 @@ class Transaction extends Model
     public function User(){
         return $this->belongsTo('App\Models\User');
     }
-    public function Category(){
+    public function category(){
         return $this->belongsTo('App\Models\Category');
     }
-    public function Account(){
+    public function account(){
         return $this->belongsTo('App\Models\Account');
     }
 }

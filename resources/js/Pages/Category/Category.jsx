@@ -38,7 +38,7 @@ export default function Category(props) {
     <div className='mx-4 space-y-4'>
     <Head title="Category" />
 
-    <div className="flex justify-center items-center gap-4">
+    <div className="flex justify-center items-center gap-10">
       <TabButton
         isActive={tab === 'income'}
         onClick={() => selectTab('income')}

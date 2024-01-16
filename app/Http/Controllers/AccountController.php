@@ -17,7 +17,7 @@ class AccountController extends Controller
     public function index()
     {
         $accounts = Account::all();
-          return Inertia::render('Budget/IndexBudget')->with('accounts', $accounts);
+          return Inertia::render('Account/Account')->with('accounts', $accounts);
     }
 
     /**
@@ -51,7 +51,7 @@ class AccountController extends Controller
         $account->user_id = auth()->user()->id;
         $account->save();
 
-        return Redirect::to('/dashboard')->with('success','Account_created');
+        return Redirect::to('/Account')->with('success','Account_created');
     }
 
     /**
@@ -85,7 +85,20 @@ class AccountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'aname' => 'required', 
+            'value' => 'required', 
+            'notes' => 'nullable', 
+        ]);
+
+        $account = Account::find($id);
+        $account->name = $request->input('aname');
+        $account->value = $request->input('value');
+        $account->notes = $request->input('notes');
+        $account->save();
+
+        return Redirect::to('/Account')->with('success','Account_created');
+  
     }
 
     /**
@@ -96,6 +109,8 @@ class AccountController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $account = Account::find($id);
+        $account -> delete();
+        return Redirect::to('/Account');
     }
 }

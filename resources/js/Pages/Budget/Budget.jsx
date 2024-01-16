@@ -8,15 +8,26 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Budget(props) {
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editAccountId, setEditAccountId] = useState(null);
+
   const toggleModal = () => {
     setShowModal(!showModal);
   };
+
   const { data, setData, post, processing } = useForm({
     income: '',
     category: '',
     account: '',
 
   });
+  const editAccount = (account) => {
+    setEditAccountId(account.id);
+    setData({
+      aname: account.name,
+      value: account.value,
+      notes: account.notes,
+    });}
 
   const handleOnChange = (event) => {
     setData(event.target.name, event.target.value);
@@ -37,7 +48,7 @@ export default function Budget(props) {
     <div className='mx-4 space-y-4'>
       <Head title="Budget" />
 
-      <form onSubmit={submit}>
+      <form onSubmit={submitEdit}>
         <div>
           <h3>Budget amount</h3>
           <TextInput

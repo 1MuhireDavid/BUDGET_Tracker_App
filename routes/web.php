@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Account;
 use App\Models\Category;
+use App\Models\Transaction;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +38,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $account = Account::all();
     $category = Category::all();
-    return Inertia::render('Dashboard')->with(['categorys' => $category, 'accounts' => $account]);
+    $transaction = Transaction::with(['Category', 'Account'])->orderBy('created_at', 'desc')->limit(5)->get();
+    return Inertia::render('Dashboard')->with(['categorys' => $category, 'accounts' => $account, 'Transactions'=> $transaction]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

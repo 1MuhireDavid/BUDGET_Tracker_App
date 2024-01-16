@@ -31,7 +31,7 @@ class BudgetController extends Controller
     public function create()
     {
         return Inertia::render('Budget/Budget');
-    }
+    } 
 
     /**
      * Store a newly created resource in storage.
@@ -54,7 +54,7 @@ class BudgetController extends Controller
         $budget->user_id = auth()->user()->id;
         $budget->save();
 
-        return Redirect::to('/dashboard')->with('success','budget_created');
+        return Redirect::to('/Budget')->with('success','budget_created');
     }
 
     /**
@@ -78,6 +78,7 @@ class BudgetController extends Controller
      */
     public function edit($id): Response
     {
+        
         return Inertia::render('Budget/OneBudget', ['abudget' => $budget]);
     }
 
@@ -90,7 +91,20 @@ class BudgetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $this->validate($request, [
+            'income' => 'required', 
+            'category' => 'required', 
+            'account' => 'required', 
+        ]); 
+
+        $budget =Budget::find($id);
+        $budget->value = $request->input('income');
+        $budget->category = $request->input('category');
+        $budget->account = $request->input('account');
+        $budget->save();
+
+        return Redirect::to('/Budget')->with('success','budget_updated');
     }
 
     /**
@@ -101,6 +115,8 @@ class BudgetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $budget = Budget::find($id);
+        $budget -> delete();
+        return Redirect::to('/Budget');
     }
 }

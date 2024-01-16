@@ -23,6 +23,6 @@ class Account extends Model
         return $this->hasMany('App\Models\Expense');
     }
     public function Transaction(){
-        return $this->belongsToMany(Transaction::class, 'account_id');
+        return $this->belongsToMany(Transaction::class);
     }
 } 

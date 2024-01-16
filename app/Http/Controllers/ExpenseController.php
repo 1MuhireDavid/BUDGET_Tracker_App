@@ -45,6 +45,7 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
           // Validate the incoming request data
           $validatedData = $request->validate([
             'category' => 'required|string',

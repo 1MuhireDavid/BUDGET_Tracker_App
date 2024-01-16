@@ -92,7 +92,7 @@ class IncomeController extends Controller
         });
 
         // Optionally, return a response or redirect as needed
-        return Redirect::to('/dashboard')->with('message' , 'Income added successfully');
+        return Redirect::to('/Account')->with('message' , 'Income added successfully');
     }
 
     /**
